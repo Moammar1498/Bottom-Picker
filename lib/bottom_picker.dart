@@ -527,127 +527,129 @@ class _BottomPickerState extends State<BottomPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height ?? context.bottomPickerHeight,
-      decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
+    return SafeArea(
+      child: Container(
+        height: widget.height ?? context.bottomPickerHeight,
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: widget.layoutOrientation == LayoutOrientation.rtl
-                    ? _displayRTLOrientationLayout()
-                    : _displayLTROrientationLayout(),
-              ),
-            ),
-            Expanded(
-              child: widget.bottomPickerType == BottomPickerType.simple
-                  ? SimplePicker(
-                      items: widget.items!,
-                      onChange: (int index) {
-                        selectedItemIndex = index;
-                        widget.onChange?.call(index);
-                      },
-                      selectedItemIndex: widget.selectedItemIndex,
-                      textStyle: widget.pickerTextStyle,
-                      itemExtent: widget.itemExtent,
-                      selectionOverlay: widget.selectionOverlay,
-                    )
-                  : widget.bottomPickerType == BottomPickerType.time
-                      ? DatePicker(
-                          initialDateTime: widget.initialTime.toDateTime,
-                          minuteInterval: widget.minuteInterval ?? 1,
-                          maxDateTime: widget.maxTime.toDateTime,
-                          minDateTime: widget.minTime.toDateTime,
-                          mode: widget.datePickerMode,
-                          onDateChanged: (DateTime date) {
-                            selectedDateTime = date;
-                            widget.onChange?.call(date);
-                          },
-                          use24hFormat: widget.use24hFormat,
-                          dateOrder: widget.dateOrder,
-                          textStyle: widget.pickerTextStyle,
-                        )
-                      : widget.bottomPickerType == BottomPickerType.dateTime
-                          ? DatePicker(
-                              initialDateTime: widget.initialDateTime,
-                              minuteInterval: widget.minuteInterval ?? 1,
-                              maxDateTime: widget.maxDateTime,
-                              minDateTime: widget.minDateTime,
-                              mode: widget.datePickerMode,
-                              onDateChanged: (DateTime date) {
-                                selectedDateTime = date;
-                                widget.onChange?.call(date);
-                              },
-                              use24hFormat: widget.use24hFormat,
-                              dateOrder: widget.dateOrder,
-                              textStyle: widget.pickerTextStyle,
-                            )
-                          : RangePicker(
-                              initialFirstDateTime: widget.initialFirstDate,
-                              initialSecondDateTime: widget.initialSecondDate,
-                              maxFirstDate: widget.maxFirstDate,
-                              minFirstDate: widget.minFirstDate,
-                              maxSecondDate: widget.maxSecondDate,
-                              minSecondDate: widget.minSecondDate,
-                              onFirstDateChanged: (DateTime date) {
-                                selectedFirstDateTime = date;
-                              },
-                              onSecondDateChanged: (DateTime date) {
-                                selectedSecondDateTime = date;
-                              },
-                              dateOrder: widget.dateOrder,
-                              textStyle: widget.pickerTextStyle,
-                            ),
-            ),
-            if (widget.displaySubmitButton)
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+                  horizontal: 20,
                 ),
                 child: Row(
-                  mainAxisAlignment: widget.buttonAlignment,
-                  children: [
-                    BottomPickerButton(
-                      onClick: () {
-                        if (widget.bottomPickerType ==
-                            BottomPickerType.rangeDateTime) {
-                          widget.onRangeDateSubmitPressed?.call(
-                            selectedFirstDateTime,
-                            selectedSecondDateTime,
-                          );
-                        } else if (widget.bottomPickerType ==
-                                BottomPickerType.dateTime ||
-                            widget.bottomPickerType == BottomPickerType.time) {
-                          widget.onSubmit?.call(selectedDateTime);
-                        } else {
-                          widget.onSubmit?.call(selectedItemIndex);
-                        }
-
-                        Navigator.pop(context);
-                      },
-                      gradientColors: widget.gradientColor,
-                      buttonPadding: widget.buttonPadding,
-                      buttonWidth: widget.buttonWidth,
-                      solidColor: widget.buttonSingleColor,
-                      buttonChild: widget.buttonContent,
-                      style: widget.buttonStyle,
-                    ),
-                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: widget.layoutOrientation == LayoutOrientation.rtl
+                      ? _displayRTLOrientationLayout()
+                      : _displayLTROrientationLayout(),
                 ),
               ),
-          ],
+              Expanded(
+                child: widget.bottomPickerType == BottomPickerType.simple
+                    ? SimplePicker(
+                        items: widget.items!,
+                        onChange: (int index) {
+                          selectedItemIndex = index;
+                          widget.onChange?.call(index);
+                        },
+                        selectedItemIndex: widget.selectedItemIndex,
+                        textStyle: widget.pickerTextStyle,
+                        itemExtent: widget.itemExtent,
+                        selectionOverlay: widget.selectionOverlay,
+                      )
+                    : widget.bottomPickerType == BottomPickerType.time
+                        ? DatePicker(
+                            initialDateTime: widget.initialTime.toDateTime,
+                            minuteInterval: widget.minuteInterval ?? 1,
+                            maxDateTime: widget.maxTime.toDateTime,
+                            minDateTime: widget.minTime.toDateTime,
+                            mode: widget.datePickerMode,
+                            onDateChanged: (DateTime date) {
+                              selectedDateTime = date;
+                              widget.onChange?.call(date);
+                            },
+                            use24hFormat: widget.use24hFormat,
+                            dateOrder: widget.dateOrder,
+                            textStyle: widget.pickerTextStyle,
+                          )
+                        : widget.bottomPickerType == BottomPickerType.dateTime
+                            ? DatePicker(
+                                initialDateTime: widget.initialDateTime,
+                                minuteInterval: widget.minuteInterval ?? 1,
+                                maxDateTime: widget.maxDateTime,
+                                minDateTime: widget.minDateTime,
+                                mode: widget.datePickerMode,
+                                onDateChanged: (DateTime date) {
+                                  selectedDateTime = date;
+                                  widget.onChange?.call(date);
+                                },
+                                use24hFormat: widget.use24hFormat,
+                                dateOrder: widget.dateOrder,
+                                textStyle: widget.pickerTextStyle,
+                              )
+                            : RangePicker(
+                                initialFirstDateTime: widget.initialFirstDate,
+                                initialSecondDateTime: widget.initialSecondDate,
+                                maxFirstDate: widget.maxFirstDate,
+                                minFirstDate: widget.minFirstDate,
+                                maxSecondDate: widget.maxSecondDate,
+                                minSecondDate: widget.minSecondDate,
+                                onFirstDateChanged: (DateTime date) {
+                                  selectedFirstDateTime = date;
+                                },
+                                onSecondDateChanged: (DateTime date) {
+                                  selectedSecondDateTime = date;
+                                },
+                                dateOrder: widget.dateOrder,
+                                textStyle: widget.pickerTextStyle,
+                              ),
+              ),
+              if (widget.displaySubmitButton)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: widget.buttonAlignment,
+                    children: [
+                      BottomPickerButton(
+                        onClick: () {
+                          if (widget.bottomPickerType ==
+                              BottomPickerType.rangeDateTime) {
+                            widget.onRangeDateSubmitPressed?.call(
+                              selectedFirstDateTime,
+                              selectedSecondDateTime,
+                            );
+                          } else if (widget.bottomPickerType ==
+                                  BottomPickerType.dateTime ||
+                              widget.bottomPickerType == BottomPickerType.time) {
+                            widget.onSubmit?.call(selectedDateTime);
+                          } else {
+                            widget.onSubmit?.call(selectedItemIndex);
+                          }
+      
+                          Navigator.pop(context);
+                        },
+                        gradientColors: widget.gradientColor,
+                        buttonPadding: widget.buttonPadding,
+                        buttonWidth: widget.buttonWidth,
+                        solidColor: widget.buttonSingleColor,
+                        buttonChild: widget.buttonContent,
+                        style: widget.buttonStyle,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
